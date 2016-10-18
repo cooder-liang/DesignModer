@@ -10,10 +10,13 @@ import com.fengxiang.listdemo.adapter.Wrapper;
 import com.fengxiang.listdemo.builder.Builder;
 import com.fengxiang.listdemo.decorator.Decorator;
 import com.fengxiang.listdemo.decorator.SourceTarget;
+import com.fengxiang.listdemo.facade.Facade;
 import com.fengxiang.listdemo.factory.EMSFactory;
 import com.fengxiang.listdemo.factory.Factory_Sender;
 import com.fengxiang.listdemo.factory.MailFactory;
 import com.fengxiang.listdemo.factory.Sender;
+import com.fengxiang.listdemo.proxy.Proxy;
+import com.fengxiang.listdemo.proxy.ProxySource;
 
 public class Test1 {
 
@@ -58,5 +61,12 @@ public class Test1 {
 		SourceTarget target = new com.fengxiang.listdemo.decorator.Source();
 		SourceTarget souc = new Decorator(target);
 		souc.method();
+		System.out.println("=========代理模式===========");
+		ProxySource p_source = new Proxy();
+		p_source.method();
+		System.out.println("=========外观模式===========");
+		Facade facdade = new Facade();
+		facdade.startUp();
+		facdade.shutDown();
 	}
 }
