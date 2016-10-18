@@ -8,18 +8,18 @@ package com.fengxiang.listdemo.bridge;
  */
 public abstract class Bridge {
 
-	private BridgeSource source;
+	private Sourceable sourceable;
 
 	public void method() {
-		source.method();
+		sourceable.method();
 	}
 
-	public BridgeSource getSource() {
-		return source;
+	public void setSourceable(Sourceable sourceable) {
+		this.sourceable = sourceable;
 	}
 
-	public void setSource(BridgeSource source) {
-		this.source = source;
+	public Sourceable getSourceable() {
+		return sourceable;
 	}
 
 }

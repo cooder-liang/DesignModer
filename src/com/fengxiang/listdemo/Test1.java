@@ -7,7 +7,13 @@ import com.fengxiang.listdemo.adapter.Source2;
 import com.fengxiang.listdemo.adapter.Sourceable;
 import com.fengxiang.listdemo.adapter.Targetable;
 import com.fengxiang.listdemo.adapter.Wrapper;
+import com.fengxiang.listdemo.bridge.Bridge;
+import com.fengxiang.listdemo.bridge.MyBridge;
+import com.fengxiang.listdemo.bridge.SourceStub;
+import com.fengxiang.listdemo.bridge.SourceStub2;
 import com.fengxiang.listdemo.builder.Builder;
+import com.fengxiang.listdemo.composite.Tree;
+import com.fengxiang.listdemo.composite.TreeNode;
 import com.fengxiang.listdemo.decorator.Decorator;
 import com.fengxiang.listdemo.decorator.SourceTarget;
 import com.fengxiang.listdemo.facade.Facade;
@@ -68,5 +74,20 @@ public class Test1 {
 		Facade facdade = new Facade();
 		facdade.startUp();
 		facdade.shutDown();
+		System.out.println("=========桥接模式===========");
+		Bridge bridge = new MyBridge();
+		com.fengxiang.listdemo.bridge.Sourceable sour = new SourceStub();
+		com.fengxiang.listdemo.bridge.Sourceable sour1 = new SourceStub2();
+		bridge.setSourceable(sour);
+		bridge.method();
+		bridge.setSourceable(sour1);
+		bridge.method();
+		System.out.println("=========組合模式===========");
+		Tree tree = new Tree("Honour's tree");
+		TreeNode nodeB = new TreeNode("B");
+		TreeNode nodeC = new TreeNode("C");
+		nodeB.addChild(nodeC);
+		tree.root.addChild(nodeB);
+		System.out.println("build the tree finished!");
 	}
 }
