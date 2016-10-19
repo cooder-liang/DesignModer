@@ -1,5 +1,7 @@
 package com.fengxiang.listdemo;
 
+import java.util.Vector;
+
 import com.fengxiang.listdemo.adapter.AdapterModer;
 import com.fengxiang.listdemo.adapter.Source;
 import com.fengxiang.listdemo.adapter.Source1;
@@ -12,6 +14,9 @@ import com.fengxiang.listdemo.bridge.MyBridge;
 import com.fengxiang.listdemo.bridge.SourceStub;
 import com.fengxiang.listdemo.bridge.SourceStub2;
 import com.fengxiang.listdemo.builder.Builder;
+import com.fengxiang.listdemo.command.Invoker;
+import com.fengxiang.listdemo.command.MyCommander;
+import com.fengxiang.listdemo.command.Recever;
 import com.fengxiang.listdemo.composite.Tree;
 import com.fengxiang.listdemo.composite.TreeNode;
 import com.fengxiang.listdemo.decorator.Decorator;
@@ -21,8 +26,23 @@ import com.fengxiang.listdemo.factory.EMSFactory;
 import com.fengxiang.listdemo.factory.Factory_Sender;
 import com.fengxiang.listdemo.factory.MailFactory;
 import com.fengxiang.listdemo.factory.Sender;
+import com.fengxiang.listdemo.iterator.MyCollection;
+import com.fengxiang.listdemo.iterator.MyIterator;
+import com.fengxiang.listdemo.memento.Origin;
+import com.fengxiang.listdemo.memento.Storage;
+import com.fengxiang.listdemo.observer.MySubject;
+import com.fengxiang.listdemo.observer.Observe1;
+import com.fengxiang.listdemo.observer.Observe2;
 import com.fengxiang.listdemo.proxy.Proxy;
 import com.fengxiang.listdemo.proxy.ProxySource;
+import com.fengxiang.listdemo.responsibility.MyHandler;
+import com.fengxiang.listdemo.state.Context;
+import com.fengxiang.listdemo.state.Status;
+import com.fengxiang.listdemo.strategy.CalculateJian;
+import com.fengxiang.listdemo.strategy.CalculatorAdd;
+import com.fengxiang.listdemo.strategy.CalculatorMulti;
+import com.fengxiang.listdemo.strategy.ICalculator;
+import com.fengxiang.listdemo.template.ImTemplate;
 
 public class Test1 {
 
@@ -89,5 +109,83 @@ public class Test1 {
 		nodeB.addChild(nodeC);
 		tree.root.addChild(nodeB);
 		System.out.println("build the tree finished!");
+
+		System.out.println("=========策略者模式===========");
+		/*
+		 * Vector<ICalculator> cals = new Vector<>(); cals.add(new
+		 * CalculatorAdd()); cals.add(new CalculateJian()); cals.add(new
+		 * CalculatorMulti()); for (int i = 0; i < cals.size(); i++) {
+		 * System.out.println(cals.elementAt(i).calculator("8-2")); }
+		 */
+		System.out.println("=========模板方法模式===========");
+		System.out.println(new ImTemplate().unit());
+		System.out.println("=========观察者模式===========");
+		MySubject subject = new MySubject();
+		subject.add(new Observe1());
+		subject.add(new Observe2());
+		subject.operation();
+		System.out.println(subject.getObserve().size());
+		System.out.println("=========迭代器模式===========");
+		MyCollection collection = new MyCollection();
+		MyIterator iterator = new MyIterator(collection);
+		while (iterator.hasNext()) {
+			try {
+				System.out.print(iterator.next() + " ");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			System.out.println("这个元素是：" + iterator.getElement());
+			System.out.println("上个个元素是：" + iterator.previous());
+			System.out.println("下个元素是：" + iterator.next());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("=========责任链模式===========");
+		MyHandler h1 = new MyHandler("h1");
+		MyHandler h2 = new MyHandler("h2");
+		MyHandler h3 = new MyHandler("h3");
+
+		h1.setHandler(h2);
+		h2.setHandler(h3);
+		h1.operation();
+
+		System.out.println("=========命令模式===========");
+		Invoker invoker = new Invoker(new MyCommander(new Recever()));
+		invoker.action();
+
+		System.out.println("=========备忘录模式===========");
+		// 创建原始类
+		Origin origi = new Origin("init");
+
+		// 创建备忘录
+		Storage storage = new Storage(origi.createMemento());
+
+		// 修改原始类的状态
+		System.out.println("初始化状态为：" + origi.getName());
+		origi.setName("niu");
+		System.out.println("修改后的状态为：" + origi.getName());
+
+		// 回复原始类的状态
+		origi.restoreOrigin(storage.getMemento());
+		System.out.println("恢复后的状态为：" + origi.getName());
+
+		System.out.println("=========状态模式===========");
+		Status state = new Status();
+		Context context = new Context(state);
+
+		// 设置第一种状态
+		state.setName("state1");
+		context.method();
+
+		// 设置第二种状态
+		state.setName("state2");
+		context.method();
+
 	}
+
 }
