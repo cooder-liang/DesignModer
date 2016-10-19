@@ -26,8 +26,11 @@ import com.fengxiang.listdemo.factory.EMSFactory;
 import com.fengxiang.listdemo.factory.Factory_Sender;
 import com.fengxiang.listdemo.factory.MailFactory;
 import com.fengxiang.listdemo.factory.Sender;
+import com.fengxiang.listdemo.interpertor.Minus;
+import com.fengxiang.listdemo.interpertor.Plus;
 import com.fengxiang.listdemo.iterator.MyCollection;
 import com.fengxiang.listdemo.iterator.MyIterator;
+import com.fengxiang.listdemo.mediator.MyMediator;
 import com.fengxiang.listdemo.memento.Origin;
 import com.fengxiang.listdemo.memento.Storage;
 import com.fengxiang.listdemo.observer.MySubject;
@@ -43,6 +46,7 @@ import com.fengxiang.listdemo.strategy.CalculatorAdd;
 import com.fengxiang.listdemo.strategy.CalculatorMulti;
 import com.fengxiang.listdemo.strategy.ICalculator;
 import com.fengxiang.listdemo.template.ImTemplate;
+import com.fengxiang.listdemo.visitor.MyVisitor;
 
 public class Test1 {
 
@@ -185,7 +189,17 @@ public class Test1 {
 		// 设置第二种状态
 		state.setName("state2");
 		context.method();
-
+		System.out.println("=========状态模式===========");
+		MyVisitor visitor=new MyVisitor();
+		com.fengxiang.listdemo.visitor.MySubject sub=new com.fengxiang.listdemo.visitor.MySubject();
+		sub.accept(visitor);
+		System.out.println("=========中介者模式===========");
+		MyMediator mediator=new MyMediator();
+		mediator.createMediator();
+		mediator.workAll();
+		System.out.println("=========解释器模式===========");
+		int result=new Minus().interpertor(new com.fengxiang.listdemo.interpertor.Context(new Plus().interpertor(new com.fengxiang.listdemo.interpertor.Context(9, 2)), 8));
+		System.out.println(result);
 	}
 
 }
